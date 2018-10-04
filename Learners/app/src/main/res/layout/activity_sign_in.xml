@@ -4,20 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ff4a4a"
     tools:context=".view.SignInActivity">
 
-    <com.google.android.gms.common.SignInButton
+    <TextView
         android:id="@+id/btn_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="127dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginStart="33dp"
+        android:background="@drawable/button_login"
+        android:gravity="center"
+        android:paddingBottom="13dp"
+        android:paddingTop="13dp"
+        android:text="Google 계정으로 로그인하기"
+        android:textColor="#3c3d3f"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </com.google.android.gms.common.SignInButton>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"

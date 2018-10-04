@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.firstlearners.learners.R;
 import com.android.firstlearners.learners.contract.SignInContract;
@@ -30,11 +31,12 @@ import butterknife.OnClick;
 
 public class SignInActivity extends AppCompatActivity implements SignInContract.View{
     @BindView(R.id.btn_signIn)
-    SignInButton btn_signIn;
+    TextView btn_signIn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     private SignInPresenter presenter;
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInAccount account;
     private final int ACTIVITY_RESULT = 1;
     private final int RC_SIGN_IN = 2;
     private final String TAG = "Google SignIn Error";
@@ -65,6 +67,12 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
     @Override
     public void changeActivity(Class cls) {
+        if(cls.getName().contains("MainActivity")){
+            Intent intent = new Intent(this, cls);
+            startActivity(intent);
+            finish();
+            return;
+        }
         Intent intent = new Intent(this, cls);
         startActivityForResult(intent, ACTIVITY_RESULT);
     }
@@ -85,7 +93,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == ACTIVITY_RESULT && resultCode == RESULT_OK){
             String phoneNumber = data.getStringExtra("phoneNumber");
-            presenter.signUp(phoneNumber);
+            presenter.signUp(account, phoneNumber);
         }else if(requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -94,10 +102,9 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
+            account = completedTask.getResult(ApiException.class);
             // 유저에 대한 데이터를 얻고 넘긴다.
-            presenter.login();
+            presenter.login(account);
         } catch (ApiException e) {
 
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());

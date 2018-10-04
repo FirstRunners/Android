@@ -6,6 +6,6 @@ public interface MainContract {
     }
 
     interface Action{
-
+        void takeStudy();
     }
 }

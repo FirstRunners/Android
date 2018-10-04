@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="1dp"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp"
+    android:paddingBottom="1dp"
+    android:background="@drawable/button_active">
+
+    <TextView
+        android:id="@+id/selected_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textSize="12sp"
+        android:textColor="#ffffff" />
+    <ImageView
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:src="@drawable/btn_clear"/>
+</LinearLayout>

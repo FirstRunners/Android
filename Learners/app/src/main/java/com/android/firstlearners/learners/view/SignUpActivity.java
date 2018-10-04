@@ -14,6 +14,7 @@ import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.firstlearners.learners.R;
@@ -31,7 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText editPhoneNumber;
 
     @BindView(R.id.btn_complete)
-    Button btn_complete;
+    TextView btn_complete;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -65,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         if(phoneNumber.length() == 11){
             Intent intent = new Intent();
             intent.putExtra("phoneNumber",phoneNumber);
-            setResult(RESULT_OK);
+            setResult(RESULT_OK,intent);
             finish();
         }
         else{
@@ -77,7 +78,12 @@ public class SignUpActivity extends AppCompatActivity {
     private String getDevicePhoneNumber(){
         TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         if(checkPermission()){
-            return manager.getLine1Number();
+
+            String phoneNumber = manager.getLine1Number();
+            if(phoneNumber.startsWith("+82")){
+                phoneNumber = phoneNumber.replace("+82", "0");
+            }
+            return phoneNumber;
         }
 
         requestPermission();

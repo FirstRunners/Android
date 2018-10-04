@@ -9,12 +9,9 @@ public class SharedPreferenceManager {
 
     public SharedPreferenceManager(Context context) {
         mContext = context;
-        sharedPreferences = null;
+        sharedPreferences = mContext.getSharedPreferences("Learners",Context.MODE_PRIVATE);
     }
 
-    public void makeSharedPreference(String name){
-        sharedPreferences = mContext.getSharedPreferences(name, Context.MODE_PRIVATE);
-    }
 
     //일단은 String
 

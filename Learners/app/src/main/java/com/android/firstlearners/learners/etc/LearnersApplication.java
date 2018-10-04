@@ -15,17 +15,19 @@ public class LearnersApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //setNetworkService();
+        setNetworkService();
         setDataBase();
     }
 
     private void setNetworkService(){
         Retrofit retrofit =  new Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("http://54.180.69.136:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        networkService = retrofit.create(NetworkService.class);
-        networkService.setConnectivityManager(this);
+
+        NetworkService.API api  = retrofit.create(NetworkService.API.class);
+
+        networkService = new NetworkService(this, api);
     }
 
     private void setDataBase(){
@@ -40,4 +42,5 @@ public class LearnersApplication extends Application {
     public Realm getRealm(){
         return realm;
     }
+
 }
