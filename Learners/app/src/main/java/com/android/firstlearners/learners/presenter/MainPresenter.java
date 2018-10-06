@@ -34,7 +34,14 @@ public class MainPresenter implements MainContract.Action{
     @Override
     public void takeStudy() {
 
+        if(sharedPreferenceManager.getString("study_id") != null){
+            view.setShownView(true);
+        }else{
+            view.setShownView(false);
+        }
+
         if(networkService.isNetworkConnected()){
+
             if(networkService.getUserToken() !=null){
                 takeStudyForNetwork();
             }else{
@@ -53,6 +60,7 @@ public class MainPresenter implements MainContract.Action{
             public void execute(Realm realm) {
                 Study study = realm.where(Study.class).findFirst();
                 if(study != null){
+                    Log.d("test",study.study_goal);
                     view.setStudyData(study);
                 }
             }
@@ -67,6 +75,7 @@ public class MainPresenter implements MainContract.Action{
                 if(response.isSuccessful()){
                     if(response.body().status){
                         final Study result = response.body().result;
+                        Log.d("test","network_ok");
                         if(result != null){
                             sharedPreferenceManager.setString("study_id",String.valueOf(result.study_id));
                             Log.d("test","study_id");
@@ -74,8 +83,9 @@ public class MainPresenter implements MainContract.Action{
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-
+                                    Log.d("test",String.valueOf(result.study_goal));
                                     Study study = realm.copyToRealmOrUpdate(result);
+                                    Log.d("test",String.valueOf(study.study_goal));
                                     //Study study = realm.where(Study.class).findFirst();
                                     /*
                                     if(study != null){

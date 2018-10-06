@@ -10,7 +10,7 @@ public class Study extends RealmObject {
     public int study_id;
     public int study_day;
     public int study_day_goal;
-    public int study_goal;
+    public String study_goal;
     public int study_persent;
     public int study_count;
     public RealmList<StudyUsers> study_users;

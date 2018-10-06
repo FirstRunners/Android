@@ -7,6 +7,7 @@ public interface MainContract {
     interface View{
         void setPresenter(MainPresenter presenter);
         void setStudyData(Study study);
+        void setShownView(boolean flag);
     }
 
     interface Action{

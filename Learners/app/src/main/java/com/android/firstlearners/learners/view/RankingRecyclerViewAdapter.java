@@ -15,6 +15,7 @@ import io.realm.RealmList;
 public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecyclerViewHolder> {
     private RealmList<StudyUsers> studyUsers;
     private int study_count;
+
     public RankingRecyclerViewAdapter(Study study) {
         this.studyUsers = study.study_users;
         study_count = study.study_count;
@@ -32,7 +33,6 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
         String name = studyUsers.get(position).user_name;
         int att = studyUsers.get(position).user_att_cnt;
         int hw = studyUsers.get(position).user_hw_cnt;
-
         int percent = att / study_count * 100;
 
         holder.progressBar.setProgress(percent);

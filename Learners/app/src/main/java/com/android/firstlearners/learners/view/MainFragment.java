@@ -1,11 +1,15 @@
 package com.android.firstlearners.learners.view;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,9 +82,6 @@ public class MainFragment extends Fragment implements MainContract.View {
 
     @Override
     public void setStudyData(Study study) {
-        dashboardContainer.setVisibility(View.VISIBLE);
-        defaultContainer.setVisibility(View.INVISIBLE);
-
         studyUsers = study.study_users;
         adapter = new RankingRecyclerViewAdapter(study);
 
@@ -98,13 +99,36 @@ public class MainFragment extends Fragment implements MainContract.View {
 
         String end = format.format(calendar.getTime());
 
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
 
         day.setText("스터디 "+study.study_day+"일째 | 목표 달성까지"+study.study_day_goal+"일");
-        goal.setText(study.study_goal+"");
+        goal.setText(study.study_goal);
         during.setText(start+" ~ "+end);
         duringTitle.setText(month+"월 목표 달성률");
         progressBarStudy.setProgress(study.study_persent);
+
+        for(StudyUsers studyUser : studyUsers){
+            if(studyUser.user_idx == study.user_me){
+                String string = "나의 등수는" +(studyUser.user_idx+1)+"등 입니다.";
+                SpannableStringBuilder stringBuilder = new SpannableStringBuilder(string);
+                if()
+                stringBuilder.setSpan(StyleSpan(Typeface.BOLD),);
+                grade.setText();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void setShownView(boolean flag) {
+        if(flag){
+            dashboardContainer.setVisibility(View.VISIBLE);
+            defaultContainer.setVisibility(View.INVISIBLE);
+        }
+        else{
+            dashboardContainer.setVisibility(View.INVISIBLE);
+            defaultContainer.setVisibility(View.VISIBLE);
+        }
     }
 
 }
