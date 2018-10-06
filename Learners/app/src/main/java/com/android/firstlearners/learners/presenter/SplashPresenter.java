@@ -31,7 +31,6 @@ public class SplashPresenter implements SplashContract.Action{
         final NetworkService networkService = repository.getNetworkService();
 
         String userName = manager.getString("user_name");
-        Log.d("test",userName);
         String userEmail = manager.getString("user_email");
         if(userEmail == null){
             view.changeActivity(SignInActivity.class);

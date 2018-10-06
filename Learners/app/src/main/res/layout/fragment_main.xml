@@ -18,6 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/btn_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="33dp"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/study_goal"
         android:layout_width="wrap_content"
@@ -31,19 +40,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/study_day" />
 
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="@style/StudyProgressBar"
+    <RelativeLayout
+        android:id="@+id/progressBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:progress="30"
-        app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/study_goal" />
+        app:layout_constraintTop_toBottomOf="@+id/study_goal">
+
+        <ProgressBar
+            android:id="@+id/progressStudy"
+            style="@style/StudyProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="0"
+            android:theme="@style/StudyProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="0%"
+            android:textSize="12sp"
+            android:textColor="#ffffff"/>
+    </RelativeLayout>
+
 
     <View
         android:id="@+id/view_boundary"
@@ -55,7 +81,7 @@
         android:background="#d9d9d9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBox" />
 
 
     <FrameLayout

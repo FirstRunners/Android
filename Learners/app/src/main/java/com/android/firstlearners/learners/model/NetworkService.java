@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public class NetworkService {
     private NetworkService.API api;
@@ -52,8 +53,14 @@ public class NetworkService {
         @POST("user/signup")
         Call<Map<String, Object>> requestSignUp(@Body Map<String, String> map);
 
-        @GET("main")
+        @GET("main/graph")
         Call<ResponseStudy> requestStudy(@Header("user_token") String user_token);
+
+        @POST("study/new")
+        Call<Map<String, Object>> requestCreateStudy(@Header("user_token") String user_token,@Body Map<String, Object> map);
+
+        @POST("study/invite/:{study_id}")
+        Call<Map<String, Object>> requestInvite(@Header("user_token") String user_token, @Path("study_id") int study_id, @Body Map<String, Object> map);
     }
 
 

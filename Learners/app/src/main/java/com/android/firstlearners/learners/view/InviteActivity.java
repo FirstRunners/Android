@@ -1,6 +1,7 @@
 package com.android.firstlearners.learners.view;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
@@ -18,27 +19,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.android.firstlearners.learners.R;
+import com.android.firstlearners.learners.contract.InviteContract;
 import com.android.firstlearners.learners.etc.Address;
+import com.android.firstlearners.learners.etc.LearnersApplication;
+import com.android.firstlearners.learners.model.NetworkService;
+import com.android.firstlearners.learners.model.Repository;
+import com.android.firstlearners.learners.model.SharedPreferenceManager;
+import com.android.firstlearners.learners.presenter.InvitePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class InviteActivity extends AppCompatActivity{
+public class InviteActivity extends AppCompatActivity implements InviteContract.View{
     private static final int PERMISSION_REQUEST_CODE = 1;
-
-    @BindView(R.id.listOfPhoneNumber)
-    RecyclerView recyclerView;
-    @BindView(R.id.selected_item)
-    GridView gridView;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
+    private static final int CREATE_STUDY_ACTIVITY = 100;
+    @BindView(R.id.listOfPhoneNumber) RecyclerView recyclerView;
+    @BindView(R.id.selected_item) GridView gridView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.btn_send) TextView btn_send;
     private List<Address> addressList;
     private List<Address> selectedItems;
     private List<Boolean> flag;
@@ -47,15 +52,18 @@ public class InviteActivity extends AppCompatActivity{
 
     private View.OnClickListener inviteViewListener;
     private View.OnClickListener gridViewListener;
-
+    private InvitePresenter presenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
         ButterKnife.bind(this);
 
+        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(this);
+        NetworkService networkService = ((LearnersApplication)getApplicationContext()).getNetworkService();
+        Repository repository = new Repository(sharedPreferenceManager, networkService);
+        presenter = new InvitePresenter(repository, this);
         setSupportActionBar(toolbar);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -177,5 +185,42 @@ public class InviteActivity extends AppCompatActivity{
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @OnClick(R.id.btn_send)
+    void onClick(){
+        Intent intent = getIntent();
+        int activity = intent.getIntExtra("activity",0);
+
+        if(activity == CREATE_STUDY_ACTIVITY){
+            presenter.createStudy(
+                    intent.getStringExtra("name"),
+                    intent.getStringExtra("goal"),
+                    intent.getStringExtra("total"),
+                    intent.getStringExtra("meet"),
+                    intent.getStringExtra("start"),
+                    intent.getStringExtra("end"),
+                    selectedItems
+            );
+        }
+        else{
+            presenter.invite(selectedItems);
+        }
+    }
+
+    @Override
+    public void finishActivity() {
+        Intent intent = getIntent();
+        int activity = intent.getIntExtra("activity",0);
+
+        if(activity == CREATE_STUDY_ACTIVITY){
+            Intent finIntent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(finIntent);
+            finish();
+        }else{
+            finish();
+        }
     }
 }

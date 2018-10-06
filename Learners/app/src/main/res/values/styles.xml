@@ -15,8 +15,12 @@
 
 
     <style name="StudyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:colorControlActivated">#ff4a4a</item>
         <item name="android:minHeight">20dp</item>
-        <item name="android:progressDrawable">@style/StudyProgressBar</item>
+        <item name="android:progressDrawable">@drawable/study_progressbar</item>
+    </style>
+
+    <style name="IndividualProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:minHeight">25dp</item>
+        <item name="android:progressDrawable">@drawable/individual_progressbar</item>
     </style>
 </resources>

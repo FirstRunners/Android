@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -44,7 +45,6 @@ public class CreateStudyActivity extends AppCompatActivity {
     private DatePickerDialog setDayOfStart;
     private DatePickerDialog setDayOfEnd;
     private SimpleDateFormat format;
-
     private int flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +73,10 @@ public class CreateStudyActivity extends AppCompatActivity {
 
         start.setText(format.format(calendar.getTime()));
 
-        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.add(Calendar.MONTH,1);
         year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
+        month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
-
         setDayOfEnd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -87,6 +86,7 @@ public class CreateStudyActivity extends AppCompatActivity {
             }
         },year, month, day);
 
+        Log.d("test",String.valueOf(calendar.getTimeInMillis()));
         end.setText(format.format(calendar.getTime()));
     }
 
@@ -141,6 +141,13 @@ public class CreateStudyActivity extends AppCompatActivity {
                 break;
             case R.id.btn_next:
                 Intent intent = new Intent(this, InviteActivity.class);
+                intent.putExtra("activity",100);
+                intent.putExtra("name",name.getText().toString());
+                intent.putExtra("goal",goal.getText().toString());
+                intent.putExtra("total",total.getText().toString());
+                intent.putExtra("meet",meet.getText().toString());
+                intent.putExtra("start",start.getText().toString());
+                intent.putExtra("end",end.getText().toString());
                 startActivityForResult(intent, INVITE);
                 break;
         }
@@ -158,17 +165,11 @@ public class CreateStudyActivity extends AppCompatActivity {
     private void setDate(int year, int month, int dayOfMonth, TextView view){
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, dayOfMonth);
-
         SimpleDateFormat format = new SimpleDateFormat("yy.MM.dd",Locale.KOREAN);
         String date = format.format(calendar.getTime());
         view.setText(date);
         view.setTextColor(Color.parseColor("#0f1016"));
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
 }

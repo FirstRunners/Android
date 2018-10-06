@@ -46,9 +46,13 @@ public class GridViewAdapter extends BaseAdapter {
         convertView.setOnClickListener(gridViewListener);
         convertView.setTag(position);
         TextView name = convertView.findViewById(R.id.selected_name);
-        name.setText(selectedItem.get(position).name);
-        ImageView btn_clear = convertView.findViewById(R.id.btn_clear);
-        btn_clear.setOnClickListener(gridViewListener);
+
+        String name_value = selectedItem.get(position).name;
+        if(name_value.length() > 3){
+            name.setText(name_value.substring(0,3));
+        }else{
+            name.setText(name_value);
+        }
         return convertView;
     }
 
