@@ -14,9 +14,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class InviteActivity extends AppCompatActivity implements InviteContract.View{
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -44,6 +47,7 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
     @BindView(R.id.selected_item) GridView gridView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.btn_send) TextView btn_send;
+    @BindView(R.id.search_edit) EditText search;
     private List<Address> addressList;
     private List<Address> selectedItems;
     private List<Boolean> flag;
@@ -78,7 +82,7 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
         }
 
         inviteViewAdapter = new InviteViewAdapter(addressList);
-        inviteViewAdapter.addItem(selectedItems);
+        inviteViewAdapter.addSelectedItem(selectedItems);
         recyclerView.setAdapter(inviteViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -104,7 +108,7 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
                 }
                 flag.set(position,temp);
 
-                inviteViewAdapter.addItem(selectedItems);
+                inviteViewAdapter.addSelectedItem(selectedItems);
                 gridViewAdapter.addItem(selectedItems);
 
                 inviteViewAdapter.notifyDataSetChanged();
@@ -125,7 +129,7 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
 
                 selectedItems.remove(position);
 
-                inviteViewAdapter.addItem(selectedItems);
+                inviteViewAdapter.addSelectedItem(selectedItems);
                 gridViewAdapter.addItem(selectedItems);
 
                 gridViewAdapter.notifyDataSetChanged();
@@ -188,24 +192,32 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
     }
 
 
-    @OnClick(R.id.btn_send)
-    void onClick(){
-        Intent intent = getIntent();
-        int activity = intent.getIntExtra("activity",0);
+    @OnClick(value = {R.id.btn_send, R.id.btn_clear})
+    void onClick(View view){
+        int id = view.getId();
 
-        if(activity == CREATE_STUDY_ACTIVITY){
-            presenter.createStudy(
-                    intent.getStringExtra("name"),
-                    intent.getStringExtra("goal"),
-                    intent.getStringExtra("total"),
-                    intent.getStringExtra("meet"),
-                    intent.getStringExtra("start"),
-                    intent.getStringExtra("end"),
-                    selectedItems
-            );
+        if(id == R.id.btn_send){
+            Intent intent = getIntent();
+            int activity = intent.getIntExtra("activity",0);
+
+            if(activity == CREATE_STUDY_ACTIVITY){
+                presenter.createStudy(
+                        intent.getStringExtra("name"),
+                        intent.getStringExtra("goal"),
+                        intent.getStringExtra("total"),
+                        intent.getStringExtra("meet"),
+                        intent.getStringExtra("start"),
+                        intent.getStringExtra("end"),
+                        selectedItems
+                );
+            }
+            else{
+                presenter.invite(selectedItems);
+            }
         }
+
         else{
-            presenter.invite(selectedItems);
+            search.setText("");
         }
     }
 
@@ -220,7 +232,25 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
             startActivity(finIntent);
             finish();
         }else{
+            Intent finIntent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(finIntent);
             finish();
         }
+    }
+
+
+    @OnTextChanged(value =  R.id.search_edit, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void searchNameOrPhoneNumber(Editable editable){
+        List<Address> itemSearched = new ArrayList<>();
+        String string = editable.toString();
+
+        for(Address address : addressList){
+            if(address.name.contains(string) | address.phoneNumber.contains(string)){
+                itemSearched.add(address);
+            }
+        }
+        inviteViewAdapter.addItem(itemSearched);
+        inviteViewAdapter.notifyDataSetChanged();
     }
 }

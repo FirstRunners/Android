@@ -1,58 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fafafa"
-    tools:context=".view.MainActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/main_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e5e5e5"
-        android:layout_above="@id/bottom_navigation"/>
-    <LinearLayout
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/btn_goal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginEnd="25dp"
-            android:src="@drawable/goal_bar_red"/>
-        <ImageView
-            android:id="@+id/btn_schedule"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_marginStart="25dp"
-            android:src="@drawable/scedule_bar_gray"/>
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/btn_attendance"
+    <TextView
+        android:id="@+id/study_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/attendance_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"/>
-</RelativeLayout>
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="18dp"
+        android:text="스터디 0일째 | 목표달성까지 0일"
+        android:textColor="#3c3d3f"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btn_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="33dp"
+        android:layout_marginTop="19dp"
+        android:src="@drawable/profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/study_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="스터디목표"
+        android:textColor="#3c3d3f"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/study_day" />
+
+    <com.android.firstlearners.learners.etc.StudyProgressBar
+        android:id="@+id/study_progress"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/study_goal" />
+
+
+    <View
+        android:id="@+id/view_boundary"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:background="#d9d9d9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/study_progress" />
+
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_boundary">
+
+        <include layout="@layout/layout_default_main"/>
+        <include layout="@layout/layout_dashboard_main"/>
+        <include layout="@layout/layout_network_main"/>
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

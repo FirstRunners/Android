@@ -12,14 +12,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.firstlearners.learners.R;
 
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

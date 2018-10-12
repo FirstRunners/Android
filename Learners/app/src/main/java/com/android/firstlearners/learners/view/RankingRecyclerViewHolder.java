@@ -7,18 +7,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.firstlearners.learners.R;
+import com.android.firstlearners.learners.etc.CustomProgressBar;
 
 public class RankingRecyclerViewHolder extends RecyclerView.ViewHolder {
     public RelativeLayout relativeLayout;
-    public ProgressBar progressBar;
-    public TextView textView;
-    public TextView ranking;
+    public CustomProgressBar progressBar;
+    public TextView name;
     public RankingRecyclerViewHolder(View itemView) {
         super(itemView);
 
         relativeLayout = itemView.findViewById(R.id.boxIndividual);
         progressBar = itemView.findViewById(R.id.progressBarIndividual);
-        textView = itemView.findViewById(R.id.infoIndividual);
-        ranking = itemView.findViewById(R.id.ranking);
+        name = itemView.findViewById(R.id.infoName);
     }
 }

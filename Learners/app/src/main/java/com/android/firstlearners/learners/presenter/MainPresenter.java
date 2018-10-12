@@ -9,7 +9,9 @@ import com.android.firstlearners.learners.model.Repository;
 import com.android.firstlearners.learners.model.SharedPreferenceManager;
 import com.android.firstlearners.learners.model.data.ResponseStudy;
 import com.android.firstlearners.learners.model.data.Study;
-import com.android.firstlearners.learners.model.data.StudyUsers;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -27,29 +29,57 @@ public class MainPresenter implements MainContract.Action{
         this.networkService = repository.getNetworkService();
         this.realm = repository.getRealm();
         this.view = view;
-
-        this.view.setPresenter(this);
     }
 
     @Override
     public void takeStudy() {
 
         if(sharedPreferenceManager.getString("study_id") != null){
-            view.setShownView(true);
-        }else{
-            view.setShownView(false);
-        }
-
-        if(networkService.isNetworkConnected()){
-
-            if(networkService.getUserToken() !=null){
-                takeStudyForNetwork();
+            if(networkService.isNetworkConnected()){
+                isUserTokenEmpty();
             }else{
                 takeStudyForDataBase();
             }
-
         }else{
-            takeStudyForDataBase();
+            if(networkService.isNetworkConnected()){
+                isUserTokenEmpty();
+            }
+            else{
+                view.setShownView(false);
+            }
+        }
+    }
+
+    private void isUserTokenEmpty(){
+        if(networkService.getUserToken() == null){
+
+            String userName = sharedPreferenceManager.getString("user_name");
+            String userEmail = sharedPreferenceManager.getString("user_email");
+
+            Map<String, String> map = new HashMap<>();
+            map.put("user_name",userName);
+            map.put("user_email",userEmail);
+
+            Call<Map<String, Object>> requestSignIn = networkService.getApi().requestSignIn(map);
+            requestSignIn.enqueue(new Callback<Map<String, Object>>() {
+                @Override
+                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                    if(response.isSuccessful()) {
+                        Map<String, Object> map = response.body();
+                        Map<String, String> result = (Map<String, String>) map.get("result");
+                        String token = result.get("user_token");
+                        networkService.setUserToken(token);
+                        Log.d("tttttttt","login");
+                        takeStudyForNetwork();
+                        }
+                }
+                @Override
+                public void onFailure(Call<Map<String, Object>> call, Throwable t) { }
+            });
+        }
+        else{
+            Log.d("tttttttt","goStudy");
+            takeStudyForNetwork();
         }
     }
 
@@ -68,47 +98,26 @@ public class MainPresenter implements MainContract.Action{
     }
 
     private void takeStudyForNetwork(){
-        final Call<ResponseStudy> responseStudy = networkService.getApi().requestStudy(networkService.getUserToken());
+        Log.d("test","stduty");
+        Call<ResponseStudy> responseStudy = networkService.getApi().requestStudy(networkService.getUserToken());
         responseStudy.enqueue(new Callback<ResponseStudy>() {
             @Override
             public void onResponse(Call<ResponseStudy> call, Response<ResponseStudy> response) {
                 if(response.isSuccessful()){
                     if(response.body().status){
                         final Study result = response.body().result;
-                        Log.d("test","network_ok");
                         if(result != null){
                             sharedPreferenceManager.setString("study_id",String.valueOf(result.study_id));
-                            Log.d("test","study_id");
                             //DB쿼리문
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    Log.d("test",String.valueOf(result.study_goal));
-                                    Study study = realm.copyToRealmOrUpdate(result);
-                                    Log.d("test",String.valueOf(study.study_goal));
-                                    //Study study = realm.where(Study.class).findFirst();
-                                    /*
-                                    if(study != null){
-                                        study.study_id = result.study_id;
-                                        study.study_day = result.study_day;
-                                        study.study_day_goal = result.study_day_goal;
-                                        study.study_goal = result.study_goal;
-                                        study.study_persent = result.study_persent;
-                                        study.study_count = result.study_count;
-
-                                        for(int i=0 ; i < result.study_users.size(); i++){
-                                            study.study_users.get(i).user_idx = result.study_users.get(i).user_idx;
-                                            study.study_users.get(i).user_name = result.study_users.get(i).user_name;
-                                            study.study_users.get(i).user_att_cnt = result.study_users.get(i).user_att_cnt;
-                                            study.study_users.get(i).user_hw_cnt = result.study_users.get(i).user_hw_cnt;
-                                        }
-                                    }else{
-                                        study = realm.copyToRealm(result);
-                                    }*/
-
+                                    final Study study = realm.copyToRealmOrUpdate(result);
                                     view.setStudyData(study);
                                 }
                             });
+                        }else{
+                            view.setShownView(true);
                         }
                     }
                 }

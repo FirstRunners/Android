@@ -34,10 +34,8 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
         int att = studyUsers.get(position).user_att_cnt;
         int hw = studyUsers.get(position).user_hw_cnt;
         int percent = att / study_count * 100;
-
-        holder.progressBar.setProgress(percent);
-        holder.ranking .setText((position + 1)+"");
-        holder.textView.setText(name+" | "+att+"/"+study_count);
+        holder.progressBar.setProgress(50);
+        holder.name.setText(name);
     }
 
     @Override

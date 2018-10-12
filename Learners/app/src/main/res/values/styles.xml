@@ -13,6 +13,13 @@
         <item name="colorControlNormal">#ff4a4a</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:statusBarColor">#ff4a4a</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:colorControlActivated">#ffffff</item>
+    </style>
 
     <style name="StudyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:minHeight">20dp</item>

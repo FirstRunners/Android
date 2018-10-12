@@ -148,7 +148,7 @@ public class CreateStudyActivity extends AppCompatActivity {
                 intent.putExtra("meet",meet.getText().toString());
                 intent.putExtra("start",start.getText().toString());
                 intent.putExtra("end",end.getText().toString());
-                startActivityForResult(intent, INVITE);
+                startActivity(intent);
                 break;
         }
     }
@@ -171,5 +171,21 @@ public class CreateStudyActivity extends AppCompatActivity {
         view.setTextColor(Color.parseColor("#0f1016"));
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putString("startDate",start.toString());
+        outState.putString("endDate",end.toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState != null){
+            start.setText(savedInstanceState.getString("startDate"));
+            end.setText(savedInstanceState.getString("endDate"));
+        }
+    }
 }

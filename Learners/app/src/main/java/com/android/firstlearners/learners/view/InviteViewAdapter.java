@@ -31,14 +31,14 @@ public class InviteViewAdapter extends RecyclerView.Adapter<InviteViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull InviteViewHolder holder, int position) {
-        holder.view.setTag(position);
+        holder.view.setTag(addressList.get(position).position);
         holder.view.setOnClickListener(inviteViewListener);
         holder.name.setText(addressList.get(position).name);
         holder.phoneNumber.setText(addressList.get(position).phoneNumber);
         holder.isClicked.setImageResource(R.drawable.off);
 
         for(Address address : selectedItems) {
-            if(address.position == position){
+            if(addressList.get(position).position == address.position){
                 holder.isClicked.setImageResource(R.drawable.check_on);
                 break;
             }
@@ -50,9 +50,11 @@ public class InviteViewAdapter extends RecyclerView.Adapter<InviteViewHolder> {
         return addressList.size();
     }
 
-    public void addItem(List<Address> selectedItems){
+    public void addSelectedItem(List<Address> selectedItems){
         this.selectedItems = selectedItems;
     }
+
+    public void addItem(List<Address> items){this.addressList = items;}
 
     public void setInviteViewListener(View.OnClickListener inviteViewListener){
         this.inviteViewListener = inviteViewListener;

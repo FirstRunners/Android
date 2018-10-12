@@ -34,7 +34,7 @@ public class SignInActivity extends AppCompatActivity implements SignInContract.
     TextView btn_signIn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    private SignInPresenter presenter;
+    private SignInContract.Action presenter;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount account;
     private final int ACTIVITY_RESULT = 1;

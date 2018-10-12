@@ -15,7 +15,7 @@ import com.android.firstlearners.learners.presenter.SplashPresenter;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View{
 
-    private SplashPresenter presenter;
+    private SplashContract.Action presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

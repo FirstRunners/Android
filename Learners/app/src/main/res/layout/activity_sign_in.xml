@@ -7,6 +7,15 @@
     android:background="#ff4a4a"
     tools:context=".view.SignInActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:src="@drawable/splashicon"
+        app:layout_constraintBottom_toTopOf="@+id/btn_signIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/btn_signIn"
         android:layout_width="match_parent"
@@ -19,7 +28,7 @@
         android:paddingBottom="13dp"
         android:paddingTop="13dp"
         android:text="Google 계정으로 로그인하기"
-        android:textColor="#3c3d3f"
+        android:textColor="#ff4a4a"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,9 +39,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="180dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

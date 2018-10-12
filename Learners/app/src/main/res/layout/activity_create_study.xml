@@ -100,7 +100,7 @@
             android:layout_marginEnd="33dp"
             android:layout_marginStart="33dp"
             android:layout_marginTop="321dp"
-            android:hint="최대 10명까지 입력"
+            android:hint="최소 1명"
             android:maxLines="1"
             android:inputType="numberDecimal"
             android:textColorHint="#acafb2"
