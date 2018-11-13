@@ -1,5 +1,7 @@
 package com.android.firstlearners.learners.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import io.realm.RealmList;
 public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecyclerViewHolder> {
     private RealmList<StudyUsers> studyUsers;
     private int study_count;
+    private Context mContext;
 
     public RankingRecyclerViewAdapter(Study study) {
         this.studyUsers = study.study_users;
@@ -25,6 +28,7 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
     @Override
     public RankingRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_graph,parent, false);
+        mContext = parent.getContext();
         return new RankingRecyclerViewHolder(view);
     }
 
@@ -36,6 +40,13 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
         int percent = att / study_count * 100;
         holder.progressBar.setProgress(50);
         holder.name.setText(name);
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, IndividualDialog.class);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override

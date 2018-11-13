@@ -228,15 +228,11 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
 
         if(activity == CREATE_STUDY_ACTIVITY){
             Intent finIntent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(finIntent);
-            finish();
-        }else{
-            Intent finIntent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(finIntent);
-            finish();
         }
+
+        finish();
     }
 
 

@@ -68,6 +68,13 @@ public class NetworkService {
 
         @POST("study/invite/accept")
         Call<Map<String, Object>> requestAccept(@Header("user_token") String user_token);
+
+        @POST("study/invite/check")
+        Call<Map<String, Object>> requestCheck(@Header("user_token") String user_token);
+
+        @POST("/main/check/:{study_id}")
+        Call<Map<String,Object>>  requestAttendance(@Header("user_token") String user_token, @Path("study_id") int study_id);
+
     }
 
 

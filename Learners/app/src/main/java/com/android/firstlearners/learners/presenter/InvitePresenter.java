@@ -1,8 +1,6 @@
 package com.android.firstlearners.learners.presenter;
 
-import android.net.Network;
-import android.util.Log;
-
+import android.telephony.SmsManager;
 import com.android.firstlearners.learners.contract.InviteContract;
 import com.android.firstlearners.learners.etc.Address;
 import com.android.firstlearners.learners.model.NetworkService;
@@ -65,7 +63,7 @@ public class InvitePresenter implements InviteContract.Action {
     }
 
     @Override
-    public void invite(List<Address> selectedItems) {
+    public void invite(final List<Address> selectedItems) {
         int study_id = Integer.valueOf(manager.getString("study_id"));
 
         if(networkService.isNetworkConnected()){
@@ -90,6 +88,11 @@ public class InvitePresenter implements InviteContract.Action {
                             if((boolean)response.body().get("status")){
                                 // 문자 시스템 하고
                                 // 액티비티를 종료합니다.
+                                SmsManager smsManager = SmsManager.getDefault();
+                                String string = "스터디에 초대합니다.\n[스터디 초대 링크]";
+                                for(int i = 0; i< selectedItems.size(); i++){
+                                    smsManager.sendTextMessage(selectedItems.get(i).phoneNumber,null,string,null,null);
+                                }
                                 view.finishActivity();
                             }
                         }

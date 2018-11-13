@@ -29,7 +29,7 @@ public class InvitationPresenter implements InvitationContract.Action {
                 requestAccept.enqueue(new Callback<Map<String, Object>>() {
                     @Override
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                        view.finishDialog();
+                        view.finishActivity();
                     }
 
                     @Override

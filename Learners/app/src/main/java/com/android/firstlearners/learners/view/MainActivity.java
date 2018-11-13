@@ -5,10 +5,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
-import android.os.Handler;
-import android.os.Looper;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,10 +30,12 @@ import com.android.firstlearners.learners.model.SharedPreferenceManager;
 import com.android.firstlearners.learners.model.data.Study;
 import com.android.firstlearners.learners.model.data.StudyUsers;
 import com.android.firstlearners.learners.presenter.MainPresenter;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +46,6 @@ import io.realm.RealmList;
 public class MainActivity extends AppCompatActivity implements  MainContract.View{
 
     private MainContract.Action presenter;
-    private RealmList<StudyUsers> studyUsers;
     private RankingRecyclerViewAdapter adapter;
     private ConnectivityManager connectivityManager;
     private ConnectivityManager.NetworkCallback networkCallback;
@@ -59,11 +58,17 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
     @BindView(R.id.study_progress) StudyProgressBar progressBarStudy;
     @BindView(R.id.during) TextView during;
     @BindView(R.id.duringTitle) TextView duringTitle;
-    @BindView(R.id.grade) TextView grade;
     @BindView(R.id.rankingBox) RecyclerView rankingBox;
     @BindView(R.id.study_day) TextView day;
     @BindView(R.id.study_goal) TextView goal;
     @BindView(R.id.refresh) ImageView refresh;
+    @BindView(R.id.btn_attendance) FloatingActionButton btn_attendance;
+    @BindView(R.id.first) ImageView first;
+    @BindView(R.id.second) ImageView second;
+    @BindView(R.id.third) ImageView third;
+    @BindView(R.id.firstName) TextView firstName;
+    @BindView(R.id.secondName) TextView secondName;
+    @BindView(R.id.thirdName) TextView thirdName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         networkCallback = new ConnectivityManager.NetworkCallback(){
             @Override
             public void onAvailable(Network network) {
-                presenter.takeStudy();
+                presenter.isNetworkConnected();
             }
         };
 
@@ -94,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.takeStudy();
+        presenter.isNetworkConnected();
         NetworkRequest.Builder builder = new NetworkRequest.Builder();
         connectivityManager.registerNetworkCallback(builder.build(), networkCallback);
     }
 
-    @OnClick(value = {R.id.btn_make, R.id.refresh})
+    @OnClick(value = {R.id.btn_make, R.id.refresh, R.id.btn_attendance})
     public void onClick(View view){
         int id = view.getId();
         switch (id){
@@ -108,7 +113,10 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
                 startActivity(intent);
                 break;
             case R.id.refresh:
-                presenter.takeStudy();
+                presenter.isNetworkConnected();
+                break;
+            case R.id.btn_attendance:
+                presenter.clickAttendanceButton();
                 break;
         }
     }
@@ -119,7 +127,41 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         defaultContainer.setVisibility(View.INVISIBLE);
         networkContainer.setVisibility(View.INVISIBLE);
 
-        studyUsers = study.study_users;
+        RealmList<StudyUsers> studyUsers = study.study_users;
+
+        if(studyUsers.size() > 2){
+            thirdName.setText(studyUsers.get(2).user_name);
+            third.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                    startActivity(intent);
+                }
+            });
+            studyUsers.remove(2);
+        }
+        else if(studyUsers.size() > 1){
+            secondName.setText(studyUsers.get(1).user_name);
+            second.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                    startActivity(intent);
+                }
+            });
+            studyUsers.remove(1);
+        }
+        firstName.setText(studyUsers.get(0).user_name);
+        first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                startActivity(intent);
+            }
+        });
+
+        studyUsers.remove(0);
+        study.study_users = studyUsers;
         adapter = new RankingRecyclerViewAdapter(study);
 
         rankingBox.setAdapter(adapter);
@@ -162,19 +204,6 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         duringTitle.setText(month+"월 목표 달성률");
         //progressBarStudy.setProgress(study.study_persent);
         progressBarStudy.setProgress(30);
-        for(StudyUsers studyUser : studyUsers){
-            if(studyUser.user_idx == study.user_me){
-                String gradeValue = "나의 등수는 " +(studyUser.user_idx+1)+"등입니다.";
-                SpannableStringBuilder gradeBuilder = new SpannableStringBuilder(gradeValue);
-                if(studyUser.user_idx < 10){
-                    gradeBuilder.setSpan(new StyleSpan(Typeface.BOLD),7, 9,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }else{
-                    gradeBuilder.setSpan(new StyleSpan(Typeface.BOLD),7, 10,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                }
-                grade.setText(gradeBuilder);
-                break;
-            }
-        }
     }
 
     @Override
@@ -190,8 +219,40 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
     }
 
     @Override
+    public void showAttendanceDialog(boolean flag, Map<String, Object> result) {
+
+        if(result != null){
+            boolean check_flag = (Boolean) result.get("check_flag");
+
+            Intent intent = new Intent(this, AttendanceDialog.class);
+            String attend_users = (new Gson()).toJson( result.get("attend_users"));
+            intent.putExtra("item", attend_users);
+
+            if(check_flag){
+                intent.putExtra("flag", true);
+            }else{
+                intent.putExtra("flag", false);
+            }
+
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "네트워크 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void startInvitationActivity(String userName) {
+        Intent intent = new Intent(this, InvitationActivity.class);
+        intent.putExtra("userName",userName);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         connectivityManager.unregisterNetworkCallback(networkCallback);
     }
+
+
 }

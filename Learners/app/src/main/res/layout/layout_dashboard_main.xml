@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dashboard_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="invisible">
+    android:visibility="visible">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -41,50 +44,101 @@
         <RelativeLayout
             android:id="@+id/track_box"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="36dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/duringTitle">
-
+            
             <ImageView
-                android:id="@+id/track"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/track" />
-
-            <TextView
-                android:id="@+id/grade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="나의 등수는 X등 입니다."
-                android:textColor="#0f1016"
-                android:textSize="18sp" />
+                android:src="@drawable/crown"
+                android:layout_centerHorizontal="true"/>
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ranking"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:id="@+id/first"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:id="@+id/second"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="24dp"
+                android:layout_toStartOf="@id/first"/>
+
+            <ImageView
+                android:id="@+id/third"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="46dp"
+                android:layout_marginStart="24dp"
+                android:layout_toEndOf="@id/first"/>
+
+            <TextView
+                android:id="@+id/firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/secondName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:layout_alignEnd="@+id/second"
+                android:layout_alignStart="@+id/second"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/thirdName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:layout_alignEnd="@+id/third"
+                android:layout_alignStart="@+id/third"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"/>
         </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/ranking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:text="랭킹"
-            android:textColor="#0f1016"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/track_box" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rankingBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ranking" />
+            app:layout_constraintTop_toBottomOf="@+id/track_box" />
+
     </android.support.constraint.ConstraintLayout>
-</ScrollView>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/stamp_icon"
+        app:backgroundTint="#ff4a4a"
+        app:fabSize="normal" />
+</RelativeLayout>

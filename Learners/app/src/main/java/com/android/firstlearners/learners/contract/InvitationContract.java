@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface InvitationContract {
     interface View{
-        void finishDialog();
+        void finishActivity();
     }
 
     interface Action{
