@@ -19,8 +19,6 @@
 
     <com.android.firstlearners.learners.etc.CustomProgressBar
         android:id="@+id/progressBarIndividual"
-        style="@style/IndividualProgressBar"
-        android:theme="@style/StudyProgressBar"
         android:layout_toEndOf="@+id/infoName"
         android:paddingEnd="20dp"
         android:layout_marginStart="12dp"

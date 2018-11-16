@@ -58,8 +58,8 @@ public class IndividualDialog extends AppCompatActivity implements IndiviualDial
         Intent intent = getIntent();
         int user_idx = intent.getIntExtra("user_idx",-1);
 
-        name.setText(study.study_users.get(0).user_name);
-        att.setText(String.valueOf(study.study_users.get(0).user_att_cnt));
+        name.setText(study.study_users.get(user_idx).user_name);
+        att.setText(String.valueOf(study.study_users.get(user_idx).user_att_cnt));
 
         if(user_idx == 0){
             first.setVisibility(View.VISIBLE);

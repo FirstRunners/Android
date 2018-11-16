@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +36,10 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
     @Override
     public void onBindViewHolder(@NonNull RankingRecyclerViewHolder holder, int position) {
         String name = studyUsers.get(position).user_name;
-        int att = studyUsers.get(position).user_att_cnt;
-        int hw = studyUsers.get(position).user_hw_cnt;
-        int percent = att / study_count * 100;
+        float att = (float)studyUsers.get(position).user_att_cnt;
+        float percent = att / study_count;
         final int user_idx = studyUsers.get(position).user_idx;
-        holder.progressBar.setProgress(percent);
+        holder.progressBar.setProgress( (int)(percent* 100));
         holder.name.setText(name);
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

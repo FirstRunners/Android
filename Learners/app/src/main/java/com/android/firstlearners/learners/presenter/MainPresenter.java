@@ -47,25 +47,6 @@ public class MainPresenter implements MainContract.Action{
         }
     }
 
-        /*
-    @Override
-    public void takeStudy() {
-
-        if(sharedPreferenceManager.getString("study_id") != null){
-            if(networkService.isNetworkConnected()){
-                isUserTokenEmpty(FLAG_STUDY);
-            }else{
-                takeStudyForDataBase();
-            }
-        }else{
-            if(networkService.isNetworkConnected()){
-                isUserTokenEmpty(FLAG_STUDY);
-            }
-            else{
-                view.setShownView(false);
-            }
-        }
-    }*/
 
     @Override
     public void clickAttendanceButton() {
@@ -129,6 +110,7 @@ public class MainPresenter implements MainContract.Action{
                 if(response.isSuccessful()){
                     boolean status = (Boolean) response.body().get("status");
                     Map<String,Object> result = (Map<String, Object>) response.body().get("result");
+                    takeStudyForNetwork();
                     view.showAttendanceDialog(status, result);
                 }
             }
@@ -153,6 +135,7 @@ public class MainPresenter implements MainContract.Action{
     }
 
     private void takeStudyForNetwork(){
+        Log.d("dddd",networkService.getUserToken());
         Call<ResponseStudy> responseStudy = networkService.getApi().requestStudy(networkService.getUserToken());
         responseStudy.enqueue(new Callback<ResponseStudy>() {
             @Override

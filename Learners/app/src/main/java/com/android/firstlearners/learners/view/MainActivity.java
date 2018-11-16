@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
             });
             studyUsers.remove(2);
         }
-        else if(studyUsers.size() > 1){
+        if(studyUsers.size() > 1){
             secondName.setText(studyUsers.get(1).user_name);
             Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(second);
             second.setOnClickListener(new View.OnClickListener() {
@@ -204,8 +204,15 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
 
         day.setText(stringBuilder);
         goal.setText(study.study_goal);
-        during.setText(start+" ~ "+end);
-        duringTitle.setText(month+"월 목표 달성률");
+
+        if(study.study_day_goal == 0){
+            during.setVisibility(View.GONE);
+            duringTitle.setText("목표를 달성하였습니다.");
+        }
+        else{
+            during.setText(start+" ~ "+end);
+            duringTitle.setText(month+"월 목표 달성률");
+        }
         progressBarStudy.setProgress(study.study_persent);
     }
 

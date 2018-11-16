@@ -45,7 +45,7 @@
             android:name=".view.AttendanceDialog"
             android:theme="@style/DialogTheme" />
         <activity android:name=".view.IndividualDialog"
-                android:theme="@style/DialogTheme" />
+            android:theme="@style/DialogTheme"/>
     </application>
 
 </manifest>
