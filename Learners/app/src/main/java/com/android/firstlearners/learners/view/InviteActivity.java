@@ -74,11 +74,11 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
         addressList = new ArrayList<>();
         selectedItems = new ArrayList<>();
         flag = new ArrayList<>();
-        if(checkPermission()){
+        if(checkPermission(Manifest.permission.READ_CONTACTS)){
             getPhoneNumberList();
         }
         else{
-            requestPermission();
+            requestPermission(new String[]{Manifest.permission.READ_CONTACTS});
         }
 
         inviteViewAdapter = new InviteViewAdapter(addressList);
@@ -165,20 +165,42 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getPhoneNumberList();
-                    inviteViewAdapter.notifyDataSetChanged();
+                    if(permissions[0].compareTo(Manifest.permission.SEND_SMS) == 0){
+                        Intent intent = getIntent();
+                        int activity = intent.getIntExtra("activity",0);
+
+                        if(activity == CREATE_STUDY_ACTIVITY){
+                            presenter.createStudy(
+                                    intent.getStringExtra("name"),
+                                    intent.getStringExtra("goal"),
+                                    intent.getStringExtra("total"),
+                                    intent.getStringExtra("meet"),
+                                    intent.getStringExtra("start"),
+                                    intent.getStringExtra("end"),
+                                    selectedItems
+                            );
+                        }
+                        else{
+                            presenter.invite(selectedItems);
+                        }
+                        Log.d("dddd","permission");
+                    }
+                    else{
+                        getPhoneNumberList();
+                        inviteViewAdapter.notifyDataSetChanged();
+                    }
                 }
                 break;
         }
     }
 
-    private boolean checkPermission(){
-        return ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+    private boolean checkPermission(String permission){
+        return ContextCompat.checkSelfPermission(this, permission)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void requestPermission(){
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},PERMISSION_REQUEST_CODE);
+    private void requestPermission(String[] strings){
+        ActivityCompat.requestPermissions(this, strings,PERMISSION_REQUEST_CODE);
     }
 
     @Override
@@ -201,18 +223,31 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
             int activity = intent.getIntExtra("activity",0);
 
             if(activity == CREATE_STUDY_ACTIVITY){
-                presenter.createStudy(
-                        intent.getStringExtra("name"),
-                        intent.getStringExtra("goal"),
-                        intent.getStringExtra("total"),
-                        intent.getStringExtra("meet"),
-                        intent.getStringExtra("start"),
-                        intent.getStringExtra("end"),
-                        selectedItems
-                );
+                if(checkPermission(Manifest.permission.SEND_SMS)){
+                    presenter.createStudy(
+                            intent.getStringExtra("name"),
+                            intent.getStringExtra("goal"),
+                            intent.getStringExtra("total"),
+                            intent.getStringExtra("meet"),
+                            intent.getStringExtra("start"),
+                            intent.getStringExtra("end"),
+                            selectedItems
+                    );
+                }
+                else{
+                    requestPermission(new String[]{Manifest.permission.SEND_SMS});
+                    Log.d("dddd","request");
+                }
+
             }
             else{
-                presenter.invite(selectedItems);
+                if(checkPermission(Manifest.permission.SEND_SMS)){
+                    presenter.invite(selectedItems);
+                }
+                else{
+                    requestPermission(new String[]{Manifest.permission.SEND_SMS});
+                    Log.d("dddd","request");
+                }
             }
         }
 

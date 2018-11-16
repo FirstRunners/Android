@@ -38,12 +38,14 @@ public class RankingRecyclerViewAdapter extends RecyclerView.Adapter<RankingRecy
         int att = studyUsers.get(position).user_att_cnt;
         int hw = studyUsers.get(position).user_hw_cnt;
         int percent = att / study_count * 100;
-        holder.progressBar.setProgress(50);
+        final int user_idx = studyUsers.get(position).user_idx;
+        holder.progressBar.setProgress(percent);
         holder.name.setText(name);
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, IndividualDialog.class);
+                intent.putExtra("user_idx",user_idx);
                 mContext.startActivity(intent);
             }
         });

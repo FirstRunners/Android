@@ -15,6 +15,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.android.firstlearners.learners.model.SharedPreferenceManager;
 import com.android.firstlearners.learners.model.data.Study;
 import com.android.firstlearners.learners.model.data.StudyUsers;
 import com.android.firstlearners.learners.presenter.MainPresenter;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -47,8 +49,6 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
 
     private MainContract.Action presenter;
     private RankingRecyclerViewAdapter adapter;
-    private ConnectivityManager connectivityManager;
-    private ConnectivityManager.NetworkCallback networkCallback;
 
     @BindView(R.id.dashboard_container) View dashboardContainer;
     @BindView(R.id.default_container) View defaultContainer;
@@ -85,23 +85,12 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         Repository repository = new Repository(sharedPreferenceManager, networkService, realm);
         presenter = new MainPresenter(repository, this);
 
-        connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-
-        networkCallback = new ConnectivityManager.NetworkCallback(){
-            @Override
-            public void onAvailable(Network network) {
-                presenter.isNetworkConnected();
-            }
-        };
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.isNetworkConnected();
-        NetworkRequest.Builder builder = new NetworkRequest.Builder();
-        connectivityManager.registerNetworkCallback(builder.build(), networkCallback);
     }
 
     @OnClick(value = {R.id.btn_make, R.id.refresh, R.id.btn_attendance})
@@ -127,14 +116,20 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         defaultContainer.setVisibility(View.INVISIBLE);
         networkContainer.setVisibility(View.INVISIBLE);
 
-        RealmList<StudyUsers> studyUsers = study.study_users;
+        RealmList<StudyUsers> studyUsers = new RealmList<>();
+
+        for( StudyUsers s : study.study_users){
+            studyUsers.add(s);
+        }
 
         if(studyUsers.size() > 2){
             thirdName.setText(studyUsers.get(2).user_name);
+            Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(third);
             third.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                    intent.putExtra("user_idx",2);
                     startActivity(intent);
                 }
             });
@@ -142,27 +137,36 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         }
         else if(studyUsers.size() > 1){
             secondName.setText(studyUsers.get(1).user_name);
+            Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(second);
             second.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                    intent.putExtra("user_idx",1);
                     startActivity(intent);
                 }
             });
             studyUsers.remove(1);
         }
         firstName.setText(studyUsers.get(0).user_name);
+        Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(first);
         first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),IndividualDialog.class);
+                intent.putExtra("user_idx",0);
                 startActivity(intent);
             }
         });
 
         studyUsers.remove(0);
-        study.study_users = studyUsers;
-        adapter = new RankingRecyclerViewAdapter(study);
+
+        Study dump = new Study();
+        dump.study_users = studyUsers;
+        dump.study_count = study.study_count;
+
+        //study.study_users = studyUsers;
+        adapter = new RankingRecyclerViewAdapter(dump);
 
         rankingBox.setAdapter(adapter);
         rankingBox.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -202,8 +206,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         goal.setText(study.study_goal);
         during.setText(start+" ~ "+end);
         duringTitle.setText(month+"월 목표 달성률");
-        //progressBarStudy.setProgress(study.study_persent);
-        progressBarStudy.setProgress(30);
+        progressBarStudy.setProgress(study.study_persent);
     }
 
     @Override
@@ -224,17 +227,16 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         if(result != null){
             boolean check_flag = (Boolean) result.get("check_flag");
 
-            Intent intent = new Intent(this, AttendanceDialog.class);
-            String attend_users = (new Gson()).toJson( result.get("attend_users"));
-            intent.putExtra("item", attend_users);
+            if(!check_flag){
+                Intent intent = new Intent(this, AttendanceDialog.class);
 
-            if(check_flag){
-                intent.putExtra("flag", true);
-            }else{
-                intent.putExtra("flag", false);
+                String attend_users = (new Gson()).toJson( result.get("attend_users"));
+                intent.putExtra("item", attend_users);
+                startActivity(intent);
             }
-
-            startActivity(intent);
+            else{
+                Toast.makeText(this, "출석이 취소되었습니다.", Toast.LENGTH_LONG).show();
+            }
         }
         else{
             Toast.makeText(this, "네트워크 연결을 확인해주세요.", Toast.LENGTH_LONG).show();
@@ -248,11 +250,11 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         startActivity(intent);
     }
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
-        connectivityManager.unregisterNetworkCallback(networkCallback);
     }
-
 
 }

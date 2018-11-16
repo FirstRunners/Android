@@ -69,7 +69,7 @@ public class InvitePresenter implements InviteContract.Action {
         if(networkService.isNetworkConnected()){
             if(networkService.getUserToken() != null){
                 Map<String, Object> map = new HashMap<>();
-                List<Map<String, String>> list = new ArrayList<>();
+                final List<Map<String, String>> list = new ArrayList<>();
 
                 for(int i = 0 ; i < selectedItems.size() ; i++){
                     Map<String, String> subMap = new HashMap<>();
@@ -89,7 +89,7 @@ public class InvitePresenter implements InviteContract.Action {
                                 // 문자 시스템 하고
                                 // 액티비티를 종료합니다.
                                 SmsManager smsManager = SmsManager.getDefault();
-                                String string = "스터디에 초대합니다.\n[스터디 초대 링크]";
+                                String string = "스터디에 초대합니다.\n[http://54.180.69.136:3000/study/invite_web]";
                                 for(int i = 0; i< selectedItems.size(); i++){
                                     smsManager.sendTextMessage(selectedItems.get(i).phoneNumber,null,string,null,null);
                                 }

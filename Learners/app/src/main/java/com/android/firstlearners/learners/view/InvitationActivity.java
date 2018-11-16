@@ -22,6 +22,7 @@ import butterknife.OnClick;
 
 public class InvitationActivity extends AppCompatActivity implements InvitationContract.View{
     @BindView(R.id.accept) TextView accept;
+    @BindView(R.id.who) TextView who;
     private InvitationContract.Action presenter;
     private Timer timer;
     private TimerTask task;
@@ -40,7 +41,7 @@ public class InvitationActivity extends AppCompatActivity implements InvitationC
         presenter = new InvitationPresenter(this, repository);
 
         String userName = getIntent().getStringExtra("userName");
-        accept.setText(userName);
+        who.setText(userName+"님께서 보낸 초대를\n수락하시겠습니까?");
 
         task = new TimerTask() {
             @Override

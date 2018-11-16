@@ -1,5 +1,7 @@
 package com.android.firstlearners.learners.presenter;
 
+import android.util.Log;
+
 import com.android.firstlearners.learners.contract.MainContract;
 import com.android.firstlearners.learners.model.NetworkService;
 import com.android.firstlearners.learners.model.Repository;
@@ -75,6 +77,7 @@ public class MainPresenter implements MainContract.Action{
     }
 
     private void isUserTokenEmpty(final int flag){
+
         if(networkService.getUserToken() == null){
 
             String userName = sharedPreferenceManager.getString("user_name");
@@ -119,12 +122,15 @@ public class MainPresenter implements MainContract.Action{
 
     private void requestAttendance(){
         int study_id = Integer.valueOf(sharedPreferenceManager.getString("study_id"));
-
         Call<Map<String,Object>> requestAttendance = networkService.getApi().requestAttendance(networkService.getUserToken(), study_id);
         requestAttendance.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-
+                if(response.isSuccessful()){
+                    boolean status = (Boolean) response.body().get("status");
+                    Map<String,Object> result = (Map<String, Object>) response.body().get("result");
+                    view.showAttendanceDialog(status, result);
+                }
             }
 
             @Override
@@ -160,7 +166,7 @@ public class MainPresenter implements MainContract.Action{
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    final Study study = realm.copyToRealmOrUpdate(result);
+                                    Study study = realm.copyToRealmOrUpdate(result);
                                     view.setStudyData(study);
                                 }
                             });

@@ -43,7 +43,7 @@
         </activity>
         <activity
             android:name=".view.AttendanceDialog"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@style/DialogTheme" />
         <activity android:name=".view.IndividualDialog"
                 android:theme="@style/DialogTheme" />
     </application>
