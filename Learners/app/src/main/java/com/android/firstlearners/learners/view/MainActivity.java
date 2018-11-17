@@ -18,6 +18,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
     @BindView(R.id.firstName) TextView firstName;
     @BindView(R.id.secondName) TextView secondName;
     @BindView(R.id.thirdName) TextView thirdName;
+    @BindView(R.id.thirdBackground)
+    RelativeLayout thirdBackground;
+    @BindView(R.id.secondBackground) RelativeLayout secondBackground;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         if(studyUsers.size() > 2){
             thirdName.setText(studyUsers.get(2).user_name);
             Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(third);
+            thirdBackground.setVisibility(View.VISIBLE);
             third.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -137,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         if(studyUsers.size() > 1){
             secondName.setText(studyUsers.get(1).user_name);
             Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(second);
+            secondBackground.setVisibility(View.VISIBLE);
             second.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
