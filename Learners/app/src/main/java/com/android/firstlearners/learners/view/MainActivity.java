@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         dashboardContainer.setVisibility(View.VISIBLE);
         defaultContainer.setVisibility(View.INVISIBLE);
         networkContainer.setVisibility(View.INVISIBLE);
-
         RealmList<StudyUsers> studyUsers = new RealmList<>();
 
         for( StudyUsers s : study.study_users){
@@ -213,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
             during.setText(start+" ~ "+end);
             duringTitle.setText(month+"월 목표 달성률");
         }
-        progressBarStudy.setProgress(study.study_persent);
+        progressBarStudy.setProgress(study.study_percent);
     }
 
     @Override
