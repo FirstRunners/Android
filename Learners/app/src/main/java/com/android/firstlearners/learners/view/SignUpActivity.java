@@ -16,12 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.firstlearners.learners.R;
-
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.android.firstlearners.learners.R;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;

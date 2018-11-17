@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         presenter.isNetworkConnected();
     }
 
-    @OnClick(value = {R.id.btn_make, R.id.refresh, R.id.btn_attendance})
+    @OnClick(value = {R.id.btn_make, R.id.refresh, R.id.btn_attendance, R.id.btn_profile})
     public void onClick(View view){
         int id = view.getId();
         switch (id){
@@ -110,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
                 break;
             case R.id.btn_attendance:
                 presenter.clickAttendanceButton();
+                break;
+            //마이페이지로 이동
+            case R.id.btn_profile:
+                Intent intent1 = new Intent(this, MypageActivity.class);
+                startActivity(intent1);
                 break;
         }
     }
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
 
         if(studyUsers.size() > 2){
             thirdName.setText(studyUsers.get(2).user_name);
+            //스터디 유저의 이미지 업로드
             Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(third);
             thirdBackground.setVisibility(View.VISIBLE);
             third.setOnClickListener(new View.OnClickListener() {

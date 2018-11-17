@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="260dp"
+    android:layout_height="240dp"
+    tools:context=".view.StudyDateDialog">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="64dp"
+        android:text="스터디 기간 변경"
+        android:textStyle="bold"
+        android:textColor="#0f1016"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="39dp"
+        android:gravity="center_horizontal"
+        android:text="수정한 기간에 따라 스터디 목표 달성\n그래프 총량이 바뀝니다."
+        android:textColor="#707070"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/daypicker_line"
+        app:layout_constraintTop_toBottomOf="@+id/text1">
+
+        <TextView
+            android:id="@+id/dayOfStart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="18.09.20"
+            android:textColor="#acafb2"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/studyperiod" />
+
+        <TextView
+            android:id="@+id/dayOfEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="18.10.20"
+            android:textColor="#acafb2"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+    <!--<DatePicker-->
+        <!--android:id="@+id/datePicker"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="160dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:datePickerMode="spinner"-->
+        <!--android:calendarViewShown="false"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/relativeLayout">-->
+
+    <!--</DatePicker>-->
+
+    <TextView
+        android:id="@+id/canceal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="19dp"
+        android:text="취소"
+        android:textColor="#acafb2"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+    <TextView
+        android:id="@+id/apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="19dp"
+        android:textStyle="bold"
+        android:text="적용"
+        android:textColor="#ff4a4a"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/canceal"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+</android.support.constraint.ConstraintLayout>

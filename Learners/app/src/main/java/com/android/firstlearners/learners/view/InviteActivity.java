@@ -50,6 +50,9 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
     @BindView(R.id.search_edit) EditText search;
     private List<Address> addressList;
     private List<Address> selectedItems;
+    SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(this);
+    NetworkService networkService = ((LearnersApplication)getApplicationContext()).getNetworkService();
+    Repository repository = new Repository(sharedPreferenceManager, networkService);
     private List<Boolean> flag;
     private InviteViewAdapter inviteViewAdapter;
     private GridViewAdapter gridViewAdapter;
@@ -63,9 +66,6 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
         setContentView(R.layout.activity_invite);
         ButterKnife.bind(this);
 
-        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(this);
-        NetworkService networkService = ((LearnersApplication)getApplicationContext()).getNetworkService();
-        Repository repository = new Repository(sharedPreferenceManager, networkService);
         presenter = new InvitePresenter(repository, this);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

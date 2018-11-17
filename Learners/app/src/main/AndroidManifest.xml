@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".etc.LearnersApplication"
@@ -35,17 +35,28 @@
         <activity android:name=".view.InvitationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="invitation" android:scheme="learners" />
-            </intent-filter>
 
+                <data
+                    android:host="invitation"
+                    android:scheme="learners" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".view.AttendanceDialog"
             android:theme="@style/DialogTheme" />
-        <activity android:name=".view.IndividualDialog"
-            android:theme="@style/DialogTheme"/>
+        <activity
+            android:name=".view.IndividualDialog"
+            android:theme="@style/DialogTheme" />
+        <activity android:name=".view.MypageActivity" />
+        <activity android:name=".view.ManageStudyActivity" />
+        <activity android:name=".view.StudyOutDialog" />
+        <activity android:name=".view.AccountDeleteDialog" />
+        <activity android:name=".view.ChangeCountDialog" />
+        <activity android:name=".view.StudyDateDialog"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
     </application>
 
 </manifest>

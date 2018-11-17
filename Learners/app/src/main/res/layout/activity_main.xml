@@ -28,6 +28,8 @@
         android:src="@drawable/profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--스터디 목표 들어가는 Textview-->
     <TextView
         android:id="@+id/study_goal"
         android:layout_width="wrap_content"
