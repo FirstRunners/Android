@@ -113,7 +113,6 @@ public class StudyDateDialog extends Activity {
                 setDayOfEnd.show();
                 break;
             case R.id.apply:
-                Intent intent = new Intent(this, ManageStudyActivity.class);
                 Call<ResponseMessage> period = mypageApi.studyPeriod(networkService.getUserToken(), start.toString(), end.toString());
                 period.enqueue(new Callback<ResponseMessage>() {
                     @Override
@@ -127,7 +126,7 @@ public class StudyDateDialog extends Activity {
 
                     }
                 });
-                startActivity(intent);
+                finish();
                 break;
             case R.id.canceal:
                 finish();

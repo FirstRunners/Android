@@ -25,14 +25,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//public class StudyOutDialog extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.study_out_dialog);
-//    }
-//}
 
 public class StudyOutDialog  extends Dialog implements  View.OnClickListener{
     @BindView(R.id.change_no)
@@ -56,13 +48,8 @@ public class StudyOutDialog  extends Dialog implements  View.OnClickListener{
     public void setStudyOutListener(StudyOutListener studyOutListener){
         this.studyOutListener = studyOutListener;
     }
-//
-//    @OnClick(R.id.change_ok)
-//    public void submit(){
-//        dismiss();
-//
-//    }
-    @OnClick(R.id.change_ok)
+
+    @OnClick(value= {R.id.change_ok, R.id.change_no})
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -70,7 +57,9 @@ public class StudyOutDialog  extends Dialog implements  View.OnClickListener{
                 studyOutListener.studyOut();
                 dismiss();
                 break;
-            //아니오 눌렀을때도 처리해야함.
+            case R.id.change_no:
+                dismiss();
+                break;
         }
     }
 }

@@ -60,24 +60,7 @@ public class AccountDeleteDialog extends Dialog implements View.OnClickListener{
 
 
 
-//    @OnClick(R.id.change_ok)
-//    public void submit(){
-//        dismiss();
-//        Call<ResponseMessage> delete = mypageApi.deleteUser("");
-//        delete.enqueue(new Callback<ResponseMessage>() {
-//            @Override
-//            public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
-//                ResponseMessage responseMessage = response.body();
-//                Log.d("delete success",responseMessage.getMessage());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseMessage> call, Throwable t) {
-//
-//            }
-//        });
-//    }
-    @OnClick(R.id.change_ok)
+    @OnClick(value ={R.id.change_ok, R.id.change_no})
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -86,6 +69,9 @@ public class AccountDeleteDialog extends Dialog implements View.OnClickListener{
                 dismiss();
                 break;
             //아니오 눌렀을때도 처리해야함.
+            case R.id.change_no:
+                dismiss();
+                break;
         }
     }
 }

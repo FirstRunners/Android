@@ -27,14 +27,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//public class ManageStudyActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_manage_study);
-//    }
-//}
 
 public class ManageStudyActivity extends AppCompatActivity implements View.OnClickListener {
     ChangeCountDialog countDialog;
@@ -67,19 +59,8 @@ public class ManageStudyActivity extends AppCompatActivity implements View.OnCli
 
         mypageApi = retrofit.create(MypageApi.class);
     }
-    //
-//    @OnClick(value = {R.id.study_duration, R.id.study_out})
-//    void OnClick(View view){
-//        switch (view.getId()){
-//            //스터디 관리 페이지로이동
-//            case R.id.study_duration:
-//                countDialog.show();
-//                break;
-//            case R.id.study_out:
-//                break;
-//
-//        }
-//    }
+
+
     @OnClick(value = {R.id.study_duration, R.id.study_out, R.id.study_invite, R.id.study_count})
     @Override
     public void onClick(View view) {
@@ -87,7 +68,6 @@ public class ManageStudyActivity extends AppCompatActivity implements View.OnCli
             //스터디 관리 페이지로이동
             case R.id.study_invite:
                 Intent intent = new Intent(this, InviteActivity.class);
-                // intent.putExtra("user_token",networkService.getUserToken());
                 this.startActivity(intent);
                 break;
             case R.id.study_duration:

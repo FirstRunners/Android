@@ -21,14 +21,6 @@ import butterknife.OnClick;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//public class ChangeCountDialog extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.change_count_dialog);
-//    }
-//}
 
 public class ChangeCountDialog extends Dialog implements View.OnClickListener{
     @BindView(R.id.change_cnt)
@@ -68,7 +60,7 @@ public class ChangeCountDialog extends Dialog implements View.OnClickListener{
 //    public void noChange(){
 //        dismiss();
 //    }
-    @OnClick(R.id.change_ok)
+    @OnClick(value={R.id.change_ok, R.id.change_no})
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -85,7 +77,10 @@ public class ChangeCountDialog extends Dialog implements View.OnClickListener{
                     change_cnt.setHint("최소 1회");
                 }
                 break;
-            //아니오 눌렀을때도 처리해야함.
+            // "취소"버튼
+            case R.id.change_no:
+                dismiss();
+                break;
         }
     }
 }
