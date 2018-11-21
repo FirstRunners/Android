@@ -50,16 +50,6 @@ public class ChangeCountDialog extends Dialog implements View.OnClickListener{
         this.dialogListener = dialogListener;
     }
 
-//    @OnClick(R.id.change_ok)
-//    public void submit(){
-//        cnt = Integer.parseInt(change_cnt.getText().toString());
-
-    //        dismiss();
-//    }
-//    @OnClick(R.id.change_no)
-//    public void noChange(){
-//        dismiss();
-//    }
     @OnClick(value={R.id.change_ok, R.id.change_no})
     @Override
     public void onClick(View view) {

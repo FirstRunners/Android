@@ -1,6 +1,14 @@
 package com.android.firstlearners.learners.view;
 
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,17 +25,31 @@ import com.android.firstlearners.learners.model.Repository;
 import com.android.firstlearners.learners.model.SharedPreferenceManager;
 import com.android.firstlearners.learners.model.data.ResponseMessage;
 import com.android.firstlearners.learners.model.data.ResponseMypage;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+//추가
+import android.provider.MediaStore;
+import android.widget.Toast;
 
 
 public class MypageActivity extends AppCompatActivity {
@@ -35,6 +57,8 @@ public class MypageActivity extends AppCompatActivity {
     private NetworkService networkService;
     @BindView(R.id.changeImage)
     ImageView btn_changeImage;
+    @BindView(R.id.userImage)
+    ImageView userImage;
     @BindView(R.id.study_manage)
     TextView btn_studymanage;
     @BindView(R.id.userName) TextView userName;
@@ -44,6 +68,66 @@ public class MypageActivity extends AppCompatActivity {
 
     //study_manage
     MypageApi mypageApi;
+    private static int PICK_IMAGE_REQUEST = 1;
+
+
+    //이미지 선택
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
+//            Uri uri = data.getData();
+//            Log.d("hi baby", uri.toString());
+//            RequestOptions options = new RequestOptions();
+//            options.centerCrop();
+//            Glide.with(getApplicationContext())
+//                    .load(uri)
+//                    .apply(RequestOptions.circleCropTransform())
+//                    .into(userImage);
+//
+//            userImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+            android.net.Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+            android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            if (cursor == null)
+                return;
+
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            File file = new File(filePath);
+            uploadFile(file);
+
+        }
+
+    }
+
+    //  서버로 프로필 이미지 업로드
+    private void uploadFile(File file) {
+        okhttp3.RequestBody reqFile = okhttp3.RequestBody.create(okhttp3.MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+        Log.d("filename", file.getName());
+        Call<ResponseBody> imageUpload = mypageApi.editImage(networkService.getUserToken(), body);
+        imageUpload.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()){
+                    Log.d("Upload success", response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.e("error",t.getMessage());
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +144,7 @@ public class MypageActivity extends AppCompatActivity {
         Repository repository = new Repository(sharedPreferenceManager, networkService, realm);
 
         ButterKnife.bind(this);
-//       btn_changeImage.setEnabled(false);
-//        btn_studymanage.setEnabled(true);
+
         deleteDialog = new AccountDeleteDialog(this);
         //retrofit통신
         Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
@@ -71,13 +154,14 @@ public class MypageActivity extends AppCompatActivity {
         mypageApi = retrofit.create(MypageApi.class);
 
         //데이터 받아오기
+       // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJ1c2VyX25hbWUiOiLsmIHrr7wiLCJ1c2VyX2VtYWlsIjoieXl5IiwidXNlcl9waG9uZSI6IjAxMDEyMzQxMjM1IiwiaWF0IjoxNTQxNTkxOTI0LCJleHAiOjE1NTAyMzE5MjR9.m4OqDj5CkJpEhz81zebOHI62ZV290lpQOHuTW5NRgB0"
         Call<ResponseMypage> mypage = mypageApi.requestMypage(networkService.getUserToken());
         mypage.enqueue(new Callback<ResponseMypage>() {
             @Override
             public void onResponse(Call<ResponseMypage> call, Response<ResponseMypage> response) {
                 ResponseMypage responseMypage = response.body();
                 if(response.body().isStatus()){
-                    Log.d("success", response.body().getMessage());
+                    Log.d("image success", response.body().getMessage());
                     userName.setText(response.body().getResult().getUser_name());
                     int level = response.body().getResult().getUser_level();
                     switch(level){
@@ -100,7 +184,19 @@ public class MypageActivity extends AppCompatActivity {
 
                     // 사용자의 이미지가 존재할 때
                     if(response.body().getResult().getUser_img()!=null){
-
+                        Uri imageUri = Uri.fromFile(new File(response.body().getResult().getUser_img()));
+                        Log.d("image", response.body().getResult().getUser_img());
+                        RequestOptions options = new RequestOptions();
+                        Glide.with(getApplicationContext())
+                                .load(imageUri)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(userImage);
+                    }
+                    else
+                    {
+                        Glide.with(getApplicationContext())
+                                .load(R.drawable.basic_profile)
+                                .into(userImage);
                     }
                     study_cnt.setText(response.body().getResult().getUser_att_cnt()+" 회");
                 }
@@ -113,6 +209,7 @@ public class MypageActivity extends AppCompatActivity {
         });
     }
 
+
     @OnClick(value = {R.id.study_manage, R.id.changeImage, R.id.user_delete})
     void OnClick(View view){
         switch (view.getId()){
@@ -122,7 +219,18 @@ public class MypageActivity extends AppCompatActivity {
               // intent.putExtra("user_token",networkService.getUserToken());
                 this.startActivity(intent);
                 break;
+            //사진 선택
             case R.id.changeImage:
+//                Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent2.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                intent2.setType("image/*");
+//                startActivityForResult(Intent.createChooser(intent2, "select picture"), PICK_IMAGE_REQUEST);
+
+                Intent intent1 = new Intent();
+                intent1.setType("image/*");
+                intent1.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent1, "Select Image"), PICK_IMAGE_REQUEST);
+
                 break;
             case R.id.user_delete:
                 deleteDialog.show();

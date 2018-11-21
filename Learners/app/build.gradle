@@ -5,7 +5,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.android.firstlearners.learners"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -34,5 +34,6 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'jp.wasabeef:glide-transformations:1.0.6'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+  //  implementation 'jp.wasabeef:glide-transformations:1.0.6'
 }
