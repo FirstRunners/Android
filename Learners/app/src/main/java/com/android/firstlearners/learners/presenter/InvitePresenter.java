@@ -45,8 +45,11 @@ public class InvitePresenter implements InviteContract.Action {
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                         if(response.isSuccessful()){
                             if((boolean)response.body().get("status")){
+                                //응답결과를 받은 후 map에 넣어준다
                                 Map<String, Object> map = (Map<String, Object>)response.body().get("result");
+                                // 스터디를 식별할 수 있는 study_id를 받아온다.
                                 int study_id = ((Double) map.get("study_id")).intValue();
+                                //manager에
                                 manager.setString("study_id",String.valueOf(study_id));
                                 invite(selectedItems);
                             }

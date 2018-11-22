@@ -154,6 +154,7 @@ public class MainPresenter implements MainContract.Action{
                                 }
                             });
                         }else{
+
                             view.setShownView(true);
                         }
                     }

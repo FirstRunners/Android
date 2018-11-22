@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
 
         Repository repository = new Repository(sharedPreferenceManager, networkService, realm);
         presenter = new MainPresenter(repository, this);
+        if(sharedPreferenceManager.getString("study_id")==null){
+            Log.d("잘되가니","응");
+            dashboardContainer.setVisibility(View.INVISIBLE);
+            setShownView(false);
+        }
 
     }
 

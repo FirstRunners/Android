@@ -113,12 +113,12 @@ public class StudyDateDialog extends Activity {
                 setDayOfEnd.show();
                 break;
             case R.id.apply:
-                Call<ResponseMessage> period = mypageApi.studyPeriod(networkService.getUserToken(), start.toString(), end.toString());
+                Call<ResponseMessage> period = mypageApi.studyPeriod(networkService.getUserToken(), start.getText().toString(), end.getText().toString());
                 period.enqueue(new Callback<ResponseMessage>() {
                     @Override
                     public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
                         ResponseMessage responseMessage = response.body();
-                        Log.d("period change success",responseMessage.getMessage());
+                        Log.d("period change success",start.getText().toString()+ "부터 "+ end.getText().toString());
                     }
 
                     @Override

@@ -53,9 +53,9 @@
             android:theme="@style/DialogTheme" />
         <activity android:name=".view.MypageActivity" />
         <activity android:name=".view.ManageStudyActivity" />
-        <activity android:name=".view.StudyOutDialog" />
-        <activity android:name=".view.AccountDeleteDialog" />
-        <activity android:name=".view.ChangeCountDialog" />
+        <!--<activity android:name=".view.StudyOutDialog" />-->
+        <!--<activity android:name=".view.AccountDeleteDialog" />-->
+        <!--<activity android:name=".view.ChangeCountDialog" />-->
         <activity android:name=".view.StudyDateDialog"
             android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
     </application>

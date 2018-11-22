@@ -46,6 +46,10 @@ public class ChangeCountDialog extends Dialog implements View.OnClickListener{
         mypageApi = retrofit.create(MypageApi.class);
     }
 
+    public ChangeCountDialog(){
+        super(null);
+    }
+
     public void setDialogListener(DialogListener dialogListener){
         this.dialogListener = dialogListener;
     }

@@ -3,6 +3,7 @@ package com.android.firstlearners.learners.view;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.Image;
 import android.net.Uri;
@@ -69,7 +70,7 @@ public class MypageActivity extends AppCompatActivity {
     //study_manage
     MypageApi mypageApi;
     private static int PICK_IMAGE_REQUEST = 1;
-
+    SharedPreferenceManager sharedPreferenceManager;
 
     //이미지 선택
     @Override
@@ -95,11 +96,10 @@ public class MypageActivity extends AppCompatActivity {
                 return;
 
             cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             String filePath = cursor.getString(columnIndex);
             cursor.close();
-
+            Log.d("test_path", filePath);
             File file = new File(filePath);
             uploadFile(file);
 
@@ -137,7 +137,7 @@ public class MypageActivity extends AppCompatActivity {
 
         LearnersApplication context = (LearnersApplication) getApplicationContext();
 
-        SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(context);
+        sharedPreferenceManager = new SharedPreferenceManager(context);
         networkService = context.getNetworkService();
         Realm realm = context.getRealm();
 
@@ -184,11 +184,12 @@ public class MypageActivity extends AppCompatActivity {
 
                     // 사용자의 이미지가 존재할 때
                     if(response.body().getResult().getUser_img()!=null){
-                        Uri imageUri = Uri.fromFile(new File(response.body().getResult().getUser_img()));
+                  //  Uri imageUri = Uri.fromFile(new File(response.body().getResult().getUser_img()));
+                    //    Uri imageUri = Uri.parse(response.body().getResult().getUser_img());
                         Log.d("image", response.body().getResult().getUser_img());
                         RequestOptions options = new RequestOptions();
                         Glide.with(getApplicationContext())
-                                .load(imageUri)
+                                .load(response.body().getResult().getUser_img())
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(userImage);
                     }
@@ -215,9 +216,14 @@ public class MypageActivity extends AppCompatActivity {
         switch (view.getId()){
             //스터디 관리 페이지로이동
             case R.id.study_manage:
-                Intent intent = new Intent(this, ManageStudyActivity.class);
-              // intent.putExtra("user_token",networkService.getUserToken());
-                this.startActivity(intent);
+                if(sharedPreferenceManager.getString("study_id")==null){
+                    Toast.makeText(this, "스터디가 없습니다.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(this, ManageStudyActivity.class);
+                    // intent.putExtra("user_token",networkService.getUserToken());
+                    this.startActivity(intent);
+                }
                 break;
             //사진 선택
             case R.id.changeImage:
@@ -243,6 +249,13 @@ public class MypageActivity extends AppCompatActivity {
                             public void onResponse(Call<ResponseMessage> call, Response<ResponseMessage> response) {
                                 ResponseMessage responseMessage = response.body();
                                 Log.d("delete success",responseMessage.getMessage());
+                                Log.d("token",networkService.getUserToken());
+                                //전체 내부 데이터 삭제
+                                SharedPreferences pref = getApplicationContext().getSharedPreferences("Learners", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.clear();
+                                editor.commit();
+                                goToSplash();
                             }
 
                             @Override
@@ -255,6 +268,11 @@ public class MypageActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    public void  goToSplash(){
+        Intent intent = new Intent(this, SplashActivity.class);
+        this.startActivity(intent);
     }
 
 

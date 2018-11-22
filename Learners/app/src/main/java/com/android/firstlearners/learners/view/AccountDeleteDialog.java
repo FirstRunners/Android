@@ -38,7 +38,7 @@ public class AccountDeleteDialog extends Dialog implements View.OnClickListener{
     @BindView(R.id.change_ok) TextView change_okay;
     MypageApi mypageApi;
     private DeleteListener deleteListener;
-
+    public AccountDeleteDialog() {super(null);}
     public AccountDeleteDialog(@NonNull Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);

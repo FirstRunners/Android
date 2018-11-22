@@ -18,7 +18,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <ImageView
+                android:layout_marginLeft="32dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/back"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -27,6 +33,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="152dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="마이페이지"
                 android:textColor="#0f1016"
                 android:textSize="18sp" />
@@ -47,8 +54,8 @@
 
     <ImageView
         android:id="@+id/changeImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="195dp"
         android:layout_marginTop="115dp"
         android:layout_marginEnd="149dp"
@@ -65,8 +72,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="149dp"
         android:text="김지희"
+        android:textStyle="bold"
         android:textColor="#0F1016"
-        android:textSize="20sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userImage" />
@@ -87,14 +95,15 @@
 
     <LinearLayout
         android:id="@+id/background"
-        android:layout_width="300dp"
+        android:layout_width="198dp"
         android:layout_height="100dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="27dp"
-        android:background="#f0f0f0"
+        android:background="@drawable/gray"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userLevel">
 
@@ -104,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="7dp"
             android:text="2018.11.01~2018.11.30"
             android:textColor="#707070"
             android:textSize="10sp" />
@@ -114,6 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="7dp"
+            android:layout_marginBottom="4dp"
+            android:textStyle="bold"
             android:text="4회"
             android:textColor="#0f1016"
             android:textSize="20sp" />
@@ -128,19 +140,33 @@
             android:textSize="13sp" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/long_line"
+        android:layout_width="300dp"
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="33dp"
+        android:background="#f0f0f0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background" />
+
     <TextView
         android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="41dp"
         android:layout_marginEnd="305dp"
+        android:layout_marginTop="20dp"
         android:text="설정"
         android:textColor="#0f1016"
         android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/background" />
+        app:layout_constraintTop_toBottomOf="@+id/long_line" />
 
     <TextView
         android:id="@+id/study_manage"

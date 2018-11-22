@@ -32,6 +32,7 @@ public class StudyOutDialog  extends Dialog implements  View.OnClickListener{
     @BindView(R.id.change_ok) TextView change_okay;
     MypageApi mypageApi;
     private StudyOutListener studyOutListener;
+    public StudyOutDialog() {super(null);}
     public StudyOutDialog(@NonNull Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
