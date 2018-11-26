@@ -66,7 +66,7 @@ public class MypageActivity extends AppCompatActivity {
     @BindView(R.id.userLevel) TextView userLevel;
     @BindView(R.id.study_cnt) TextView study_cnt;
     @BindView(R.id.user_delete) TextView user_delete;
-
+    @BindView(R.id.back_main) ImageView back_main;
     //study_manage
     MypageApi mypageApi;
     private static int PICK_IMAGE_REQUEST = 1;
@@ -77,31 +77,31 @@ public class MypageActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK) {
-//            Uri uri = data.getData();
-//            Log.d("hi baby", uri.toString());
-//            RequestOptions options = new RequestOptions();
-//            options.centerCrop();
-//            Glide.with(getApplicationContext())
-//                    .load(uri)
-//                    .apply(RequestOptions.circleCropTransform())
-//                    .into(userImage);
+            Uri uri = data.getData();
+            Log.d("hi baby", uri.toString());
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+            Glide.with(getApplicationContext())
+                    .load(uri)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(userImage);
+
+            userImage.setScaleType(ImageView.ScaleType.FIT_XY);
+
+//            android.net.Uri selectedImage = data.getData();
+//            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 //
-//            userImage.setScaleType(ImageView.ScaleType.FIT_XY);
-
-            android.net.Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            if (cursor == null)
-                return;
-
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            String filePath = cursor.getString(columnIndex);
-            cursor.close();
-            Log.d("test_path", filePath);
-            File file = new File(filePath);
-            uploadFile(file);
+//            android.database.Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+//            if (cursor == null)
+//                return;
+//
+//            cursor.moveToFirst();
+//            int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            String filePath = cursor.getString(columnIndex);
+//            cursor.close();
+//            Log.d("test_path", filePath);
+//            File file = new File(filePath);
+//            uploadFile(file);
 
         }
 
@@ -211,7 +211,7 @@ public class MypageActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(value = {R.id.study_manage, R.id.changeImage, R.id.user_delete})
+    @OnClick(value = {R.id.study_manage, R.id.changeImage, R.id.user_delete, R.id.back_main})
     void OnClick(View view){
         switch (view.getId()){
             //스터디 관리 페이지로이동
@@ -265,6 +265,12 @@ public class MypageActivity extends AppCompatActivity {
                         });
                     }
                 });
+                break;
+            //메인페이지로 이동
+            case R.id.back_main:
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+                finish();
                 break;
 
         }

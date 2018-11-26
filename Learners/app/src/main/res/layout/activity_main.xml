@@ -15,7 +15,7 @@
         android:layout_marginTop="18dp"
         android:text="스터디 0일째 | 목표달성까지 0일"
         android:textColor="#3c3d3f"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

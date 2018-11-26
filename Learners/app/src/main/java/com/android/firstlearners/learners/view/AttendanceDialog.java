@@ -35,7 +35,7 @@ public class AttendanceDialog extends AppCompatActivity{
         Intent intent = getIntent();
         List<Map<String,String>> item = (List<Map<String,String>>)(new Gson()).fromJson(intent.getStringExtra("item"),Object.class);
 
-        adapter = new AttendanceRecylcerViewAdapter(item);
+        adapter = new AttendanceRecylcerViewAdapter(item, getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

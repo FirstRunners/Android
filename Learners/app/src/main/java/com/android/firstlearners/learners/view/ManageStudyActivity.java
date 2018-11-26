@@ -66,7 +66,9 @@ public class ManageStudyActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.study_out) TextView study_out;
     @BindView(R.id.study_invite) TextView study_invite;
     @BindView(R.id.study_count) TextView study_count;
-//
+    @BindView(R.id.back_mypage) ImageView back_mypage;
+
+    //
 //    //새로추가
 //    @BindView(R.id.dashboard_container) View dashboardContainer;
 //    @BindView(R.id.default_container) View defaultContainer;
@@ -123,7 +125,7 @@ SharedPreferenceManager sharedPreferenceManager;
     }
 
 
-    @OnClick(value = {R.id.study_duration, R.id.study_out, R.id.study_invite, R.id.study_count})
+    @OnClick(value = {R.id.study_duration, R.id.study_out, R.id.study_invite, R.id.study_count, R.id.back_mypage})
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -196,6 +198,13 @@ SharedPreferenceManager sharedPreferenceManager;
                 Intent intent1 = new Intent(this, StudyDateDialog.class);
                 intent1.putExtra("user_token",networkService.getUserToken());
                 this.startActivity(intent1);
+                break;
+
+                //마이페이지로 이동
+            case R.id.back_mypage:
+                Intent intent2 = new Intent(this, MypageActivity.class);
+                this.startActivity(intent2);
+                finish();
                 break;
         }
     }

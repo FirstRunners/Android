@@ -15,6 +15,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="35dp"
             android:lineSpacingExtra="4sp"
+            android:textStyle="bold"
             android:text="스터디 횟수 변경"
             android:textColor="#0f1016"
             android:textSize="20sp" />

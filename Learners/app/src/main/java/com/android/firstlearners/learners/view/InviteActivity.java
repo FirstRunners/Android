@@ -51,8 +51,11 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
     private List<Address> addressList;
     private List<Address> selectedItems;
     SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(this);
+   LearnersApplication context = (LearnersApplication) getApplicationContext();
+
+ //   SharedPreferenceManager sharedPreferenceManager = new SharedPreferenceManager(this);
     NetworkService networkService = ((LearnersApplication)getApplicationContext()).getNetworkService();
-    Repository repository = new Repository(sharedPreferenceManager, networkService);
+   // Repository repository = new Repository(sharedPreferenceManager, networkService);
     private List<Boolean> flag;
     private InviteViewAdapter inviteViewAdapter;
     private GridViewAdapter gridViewAdapter;
@@ -66,7 +69,7 @@ public class InviteActivity extends AppCompatActivity implements InviteContract.
         setContentView(R.layout.activity_invite);
         ButterKnife.bind(this);
 
-        presenter = new InvitePresenter(repository, this);
+      //  presenter = new InvitePresenter(repository, this);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

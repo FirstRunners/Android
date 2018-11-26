@@ -33,6 +33,7 @@ import com.android.firstlearners.learners.model.data.Study;
 import com.android.firstlearners.learners.model.data.StudyUsers;
 import com.android.firstlearners.learners.presenter.MainPresenter;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -138,7 +139,22 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         if(studyUsers.size() > 2){
             thirdName.setText(studyUsers.get(2).user_name);
             //스터디 유저의 이미지 업로드
-            Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(third);
+            Log.d("user_name",studyUsers.get(2).user_name);
+            Log.d("user_img",studyUsers.get(2).user_img);
+
+            if(studyUsers.get(2).user_img.equals("")) {
+                Glide.with(getApplicationContext())
+                        .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                        .load(R.drawable.basic_profile).into(third);
+            }
+            else
+            {
+                Glide.with(getApplicationContext())
+                        .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                        .load(studyUsers.get(2).user_img).into(third);
+            }
+//           Glide.with(getApplicationContext())
+//                        .load(R.drawable.basic_profile).into(third);
             thirdBackground.setVisibility(View.VISIBLE);
             third.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,8 +168,22 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
         }
         if(studyUsers.size() > 1){
             secondName.setText(studyUsers.get(1).user_name);
-            Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(second);
-            secondBackground.setVisibility(View.VISIBLE);
+            Log.d("second",studyUsers.get(1).user_img);
+            if(studyUsers.get(1).user_img.equals("")) {
+                Glide.with(getApplicationContext())
+                        .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                        .load(R.drawable.basic_profile).into(second);
+            }
+            else
+            {
+                Glide.with(getApplicationContext())
+                        .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                        .load(studyUsers.get(1).user_img).into(second);
+            }
+//           Glide.with(getApplicationContext())
+//                        .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+//                        .load(studyUsers.get(1).user_img).into(second);
+           secondBackground.setVisibility(View.VISIBLE);
             second.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -165,7 +195,21 @@ public class MainActivity extends AppCompatActivity implements  MainContract.Vie
             studyUsers.remove(1);
         }
         firstName.setText(studyUsers.get(0).user_name);
-        Glide.with(getApplicationContext()).load(R.drawable.basic_profile).into(first);
+        if(studyUsers.get(0).user_img.equals("")) {
+            Glide.with(getApplicationContext())
+                    .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                    .load(R.drawable.basic_profile).into(first);
+        }
+        else
+        {
+            Glide.with(getApplicationContext())
+                    .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+                    .load(studyUsers.get(0).user_img).into(first);
+        }
+//        Glide.with(getApplicationContext())
+//                 .applyDefaultRequestOptions(RequestOptions.circleCropTransform())
+//                .load(R.drawable.basic_profile).into(first);
+
         first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

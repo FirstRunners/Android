@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class SharedPreferenceManager {
     private Context mContext;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     public SharedPreferenceManager(Context context) {
         mContext = context;
